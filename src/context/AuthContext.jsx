@@ -1,47 +1,34 @@
 // src/context/AuthContext.jsx
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { jwtDecode } from 'jwt-decode'; // You'd need a library to decode the JWT on the client
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext(null);
 
-export const useAuth = () => useContext(AuthContext);
-
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Stores { id, role }
-  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [role, setRole] = useState(localStorage.getItem('role')); // 'admin' or 'customer'
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
 
-  // Function to initialize or refresh user state from local storage
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decoded = jwtDecode(token); // Decode the token
-        setUser({ user_id: decoded.id, role: decoded.role });
-      } catch (error) {
-        console.error('Invalid token, logging out:', error);
-        localStorage.removeItem('token');
-      }
-    }
-    setLoading(false);
-  }, []);
-
-  const login = (token) => {
+  const login = ({ token, role, userId }) => {
     localStorage.setItem('token', token);
-    const decoded = jwtDecode(token);
-    setUser({ user_id: decoded.id, role: decoded.role });
+    localStorage.setItem('role', role);
+    localStorage.setItem('userId', userId);
+    setToken(token);
+    setRole(role);
+    setUserId(userId);
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
+    localStorage.clear();
+    setToken(null);
+    setRole(null);
+    setUserId(null);
   };
 
-  const isAdmin = user && user.role === 'admin';
-  const isCustomer = user && user.role === 'customer';
-
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAdmin, isCustomer, loading }}>
+    <AuthContext.Provider value={{ token, role, userId, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);
