@@ -1,6 +1,7 @@
 // src/api/users.js
 import api from './axios';
 
+export const getCustomerStatus = () => api.get('http://localhost:5000/api/users/me/status');
 export const getUsers = () => api.get('http://localhost:5000/api/users');
 export const updateUserRole = (userId, role) => api.put(`http://localhost:5000/api/users/${userId}/role`, { role });
 export const deleteUser = (userId) => api.delete(`http://localhost:5000/api/users/${userId}/delete`);
