@@ -36,9 +36,9 @@ const App = () => (
           </Route>
 
           <Route element={<RoleRoute role="customer" />}>
-            <Route path="/customer" element={<CustomerDashboard />} />
-            <Route path="/customer/upload" element={<UploadDocument />} />
-            <Route path="/customer/documents" element={<MyDocuments />} />
+            {/* <Route path="/customer" element={<CustomerDashboard />} /> */}
+            <Route path="/customer/upload" element={<CustomerDashboard />} />
+            <Route path="/customer/status" element={<MyDocuments />} />
             <Route path="/customer/ocr/:documentId" element={<OcrRun />} />
           </Route>
         </Route>

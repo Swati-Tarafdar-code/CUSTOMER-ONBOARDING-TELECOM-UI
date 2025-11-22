@@ -1,0 +1,111 @@
+/* shared admin styles used by AdminDashboard, UsersList, PendingUsers */
+
+.admin-shell {
+  display: flex;
+  min-height: calc(100vh - 72px);
+  background: #f7fafc;
+}
+
+/* sidebar */
+.admin-sidebar {
+  width: 220px;
+  padding: 28px 18px;
+  border-right: 1px solid #eef2f7;
+  background: #fff;
+}
+.admin-sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.admin-sidebar nav li {
+  margin-bottom: 12px;
+}
+.admin-sidebar nav li button,
+.admin-sidebar nav li a {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: #374151;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+.admin-sidebar nav li.active button,
+.admin-sidebar nav li button:hover,
+.admin-sidebar nav li a:hover {
+  background: #f3f4f6;
+  color: #0b6bd6;
+}
+
+/* main */
+.admin-main {
+  flex: 1;
+  padding: 28px;
+}
+.admin-header h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+.admin-sub { color: #6b7280; margin-bottom: 18px; }
+
+/* card (reused) */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(16,24,40,0.04);
+}
+
+/* table */
+.table-wrap { overflow: auto; margin-top: 12px; }
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-table thead th {
+  text-align: left;
+  padding: 12px 16px;
+  color: #6b7280;
+  font-weight: 700;
+  background: transparent;
+  font-size: 13px;
+}
+.admin-table tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #111827;
+}
+
+/* status pill and small button */
+.status-pill {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+}
+.status-pill.pending { color: #0b6bd6; background: #eef6ff; }
+.status-pill.approved { color: #065f46; background: #ecfdf5; }
+.status-pill.rejected { color: #9f1239; background: #fff1f2; }
+
+.btn-sm {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e6eef8;
+  background: #fff;
+  color: #0b6bd6;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-sm:disabled { opacity: 0.7; cursor: default; }
+
+/* utility */
+.loading, .error { padding: 18px; color: #6b7280; }
+.admin-list-card { margin-bottom: 18px; }
+.admin-card-header h3 { margin: 0 0 6px; font-size: 20px; }
+.muted { color: #6b7280; font-size: 14px; }

@@ -25,7 +25,7 @@ const Login = () => {
       const { data } = await login({ email, password });
       const { token, user } = data || {};
       doLogin({ token, role: user?.role || presetRole || 'customer', userId: user?.userid });
-      navigate(user?.role === 'admin' || presetRole === 'admin' ? '/admin' : '/customer');
+      navigate(user?.role === 'admin' || presetRole === 'admin' ? '/admin' : '/customer/upload');
     } catch (err) {
       setLoading(false);
       setError(err?.response?.data?.message || err.message || 'Login failed');
