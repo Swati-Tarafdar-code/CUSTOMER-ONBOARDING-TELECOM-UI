@@ -1,24 +1,26 @@
 // src/pages/Admin/PendingUsers.jsx
 
-// ...new file...
-import React, { useEffect, useState } from 'react';
-import { getPendingUsers, updateUserStatus } from '../../api/users';
-import '../../AdminDashboard.css';
+
+import React, { useEffect, useState } from "react";
+import { getPendingUsers } from "../../api/users";
+import { useNavigate } from "react-router-dom";
+import "../../AdminDashboard.css";
 
 const PendingUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [actionLoading, setActionLoading] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const fetch = async () => {
-    setError('');
     setLoading(true);
+    setError("");
     try {
       const res = await getPendingUsers();
       setUsers(res.data || []);
     } catch (err) {
-      setError(err?.response?.data?.message || err.message || 'Failed to load pending users');
+      console.error("Fetch error:", err);
+      setError(err?.response?.data?.message || "Failed to load users");
     } finally {
       setLoading(false);
     }
@@ -28,17 +30,12 @@ const PendingUsers = () => {
     fetch();
   }, []);
 
-  const handleApprove = async (userId) => {
-    setActionLoading(userId);
-    try {
-      await updateUserStatus(userId, 'approved');
-      await fetch();
-    } catch (err) {
-      console.error(err);
-      setError(err?.response?.data?.message || err.message || 'Action failed');
-    } finally {
-      setActionLoading(null);
+  const openVerifyPage = (userId) => {
+    if (!userId) {
+      console.error("No userId provided");
+      return;
     }
+    navigate(`/admin/users/${userId}`);
   };
 
   return (
@@ -60,31 +57,47 @@ const PendingUsers = () => {
                 <th>User ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Requested On</th>
-                <th style={{ textAlign: 'right' }}>Action</th>
+                <th>Created On</th>
+                <th>Status</th>
+                <th style={{ textAlign: "right" }}>Action</th>
               </tr>
             </thead>
+
             <tbody>
-              {users.map((u) => (
-                <tr key={u.userid || u.id}>
-                  <td>{u.userid || u.id}</td>
-                  <td>{u.name || u.fullname || '-'}</td>
-                  <td>{u.email || '-'}</td>
-                  <td>{u.requestedAt ? new Date(u.requestedAt).toLocaleDateString() : '-'}</td>
-                  <td style={{ textAlign: 'right' }}>
-                    <button
-                      className="btn-sm"
-                      onClick={() => handleApprove(u.userid || u.id)}
-                      disabled={actionLoading === (u.userid || u.id)}
-                    >
-                      {actionLoading === (u.userid || u.id) ? 'Working…' : 'Verify'}
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {users.map((u) => {
+                // Fix: Use correct key from API response
+                const userId = u.user_id || u.userid || u.userId || u.id;
+                const userName = u.username || u.name || u.fullname || '-';
+                const userEmail = u.email || '-';
+                const createdAt = u.created_at || u.createdAt;
+                const status = u.status || 'Pending';
+
+                return (
+                  <tr key={userId}>
+                    <td>{userId}</td>
+                    <td>{userName}</td>
+                    <td>{userEmail}</td>
+                    <td>
+                      {createdAt
+                        ? new Date(createdAt).toLocaleString()
+                        : "-"}
+                    </td>
+                    <td>{status}</td>
+                    <td style={{ textAlign: "right" }}>
+                      <button
+                        className="btn-sm"
+                        onClick={() => openVerifyPage(userId)}
+                      >
+                        Verify
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+
               {users.length === 0 && (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '18px' }}>
+                  <td colSpan="6" style={{ textAlign: "center", padding: "18px" }}>
                     No pending users.
                   </td>
                 </tr>
@@ -99,29 +112,101 @@ const PendingUsers = () => {
 
 export default PendingUsers;
 
-
-// import { useEffect, useState } from 'react';
-// import { getPendingUsers, updateUserStatus } from '../../api/users';
+// import React, { useEffect, useState } from "react";
+// import { getPendingUsers } from "../../api/users";
+// import { useNavigate } from "react-router-dom";
+// import "../../AdminDashboard.css";
 
 // const PendingUsers = () => {
-//   const [rows, setRows] = useState([]);
-//   const load = async () => setRows((await getPendingUsers()).data);
-//   useEffect(()=>{ load(); }, []);
-//   const setStatus = async (userId, status) => { await updateUserStatus(userId, status); load(); };
+//   const [users, setUsers] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState("");
+//   const navigate = useNavigate();
+
+//   const fetch = async () => {
+//     setLoading(true);
+//     setError("");
+//     try {
+//       const res = await getPendingUsers();
+//       setUsers(res.data || []);
+//     } catch (err) {
+//       setError(err?.response?.data?.message || "Failed to load users");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetch();
+//   }, []);
+
+//   const openVerifyPage = (userId) => {
+//     navigate(`/admin/users/${userId}`);
+//   };
 
 //   return (
-//     <div>
-//       <h2>Pending Users</h2>
-//       <ul>
-//         {rows.map(r=>(
-//           <li key={r.userid}>
-//             {r.username} — {r.email} — {r.status}
-//             <button onClick={()=>setStatus(r.userid,'APPROVED')}>Approve</button>
-//             <button onClick={()=>setStatus(r.userid,'REJECTED')}>Reject</button>
-//           </li>
-//         ))}
-//       </ul>
+//     <div className="admin-list-card card">
+//       <header className="admin-card-header">
+//         <h3>Pending Users</h3>
+//         <p className="muted">Users awaiting verification.</p>
+//       </header>
+
+//       {loading ? (
+//         <div className="loading">Loading pending users…</div>
+//       ) : error ? (
+//         <div className="error">{error}</div>
+//       ) : (
+//         <div className="table-wrap">
+//           <table className="admin-table">
+//             <thead>
+//               <tr>
+//                 <th>User ID</th>
+//                 <th>Name</th>
+//                 <th>Email</th>
+//                 <th>Created On</th>
+//                 <th>Status</th>
+//                 <th style={{ textAlign: "right" }}>Action</th>
+//               </tr>
+//             </thead>
+
+//             <tbody>
+//               {users.map((u) => (
+//                 <tr key={u.user_id}>
+//                   <td>{u.user_id}</td>
+//                   <td>{u.username}</td>
+//                   <td>{u.email}</td>
+//                   <td>
+//                     {u.created_at
+//                       ? new Date(u.created_at).toLocaleString()
+//                       : "-"}
+//                   </td>
+//                   <td>{u.status}</td>
+//                   <td style={{ textAlign: "right" }}>
+//                     <button
+//                       className="btn-sm"
+//                       onClick={() => openVerifyPage(u.user_id)}
+//                     >
+//                       Verify
+//                     </button>
+//                   </td>
+//                 </tr>
+//               ))}
+
+//               {users.length === 0 && (
+//                 <tr>
+//                   <td colSpan="6" style={{ textAlign: "center", padding: 18 }}>
+//                     No pending users.
+//                   </td>
+//                 </tr>
+//               )}
+//             </tbody>
+//           </table>
+//         </div>
+//       )}
 //     </div>
 //   );
 // };
+
 // export default PendingUsers;
+
+
