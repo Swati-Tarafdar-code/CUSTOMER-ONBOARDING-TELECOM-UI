@@ -1,13 +1,11 @@
-// src/pages/Customer/MyDocuments.jsx
+// // src/pages/Customer/MyDocuments.jsx
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import { getCustomerStatus } from '../../api/users';
 import '../../MyDocuments.css';
 
 const MyDocuments = () => {
-  const { userId } = useAuth();
   const [docs, setDocs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -15,15 +13,14 @@ const MyDocuments = () => {
   const [comment, setComment] = useState('');
 
   const fetchDocuments = async () => {
-    if (!userId) return;
     setError('');
     setLoading(true);
     try {
-      const res = await getCustomerStatus(userId);
+      const res = await getCustomerStatus();
       // backend returns user object with documents array
       setDocs(res.data?.documents || []);
     } catch (err) {
-      console.error(err);
+      console.error('Fetch error:', err);
       setError(err?.response?.data?.message || err.message || 'Failed to load documents');
     } finally {
       setLoading(false);
@@ -32,13 +29,22 @@ const MyDocuments = () => {
 
   useEffect(() => {
     fetchDocuments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
+  }, []);
 
   const handleRefresh = async () => {
     setRefreshing(true);
     await fetchDocuments();
     setRefreshing(false);
+  };
+
+  const handleSaveComment = () => {
+    if (!comment.trim()) {
+      alert('Please enter a comment');
+      return;
+    }
+    // TODO: Call backend API to save comment if needed
+    console.log('Comment saved:', comment);
+    setComment('');
   };
 
   return (
@@ -81,11 +87,11 @@ const MyDocuments = () => {
                 </tr>
               </thead>
               <tbody>
-                {docs.map((d) => (
-                  <tr key={d.documentid || d.id}>
-                    <td>{d.documentid || d.id}</td>
-                    <td>{d.documenttype || d.type || '-'}</td>
-                    <td>{d.uploadedAt ? new Date(d.uploadedAt).toLocaleDateString() : '-'}</td>
+                {docs.map((d, idx) => (
+                  <tr key={d.document_id || d.documentid || idx}>
+                    <td>{d.document_id || d.documentid || d.id}</td>
+                    <td>{d.document_type || d.documenttype || d.type || '-'}</td>
+                    <td>{d.created_at || d.uploadedAt ? new Date(d.created_at || d.uploadedAt).toLocaleDateString() : '-'}</td>
                     <td>{d.name || '-'}</td>
                     <td className="address-col">{d.address || '-'}</td>
                     <td>{d.dob ? new Date(d.dob).toLocaleDateString() : '-'}</td>
@@ -96,11 +102,8 @@ const MyDocuments = () => {
                     </td>
                     <td>
                       <div className="row-actions">
-                        <Link to={`/customer/ocr/${d.documentid || d.id}`} className="link-action">
-                          Run OCR
-                        </Link>
-                        {d.fileUrl && (
-                          <a href={d.fileUrl} target="_blank" rel="noreferrer" className="link-action">
+                        {d.file_path && (
+                          <a href={d.file_path} target="_blank" rel="noreferrer" className="link-action">
                             View
                           </a>
                         )}
@@ -115,15 +118,16 @@ const MyDocuments = () => {
       </div>
 
       <div className="review-card card">
+        <h4>Comment</h4>
         <div className="review-grid">
-          <input
+          <textarea
             className="review-input"
-            placeholder="Review Comment"
+            placeholder="Add your comment here…"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
+            rows="3"
           />
-          <input className="review-input wide" placeholder="Input text" />
-          <button className="btn-primary small">Save Comment</button>
+
         </div>
       </div>
     </div>
@@ -131,5 +135,4 @@ const MyDocuments = () => {
 };
 
 export default MyDocuments;
-
 

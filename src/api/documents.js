@@ -46,7 +46,8 @@ export const uploadDocument = async (file) => {
   formData.append("document", file);
 
   return axios.post(
-    "http://localhost:5000/api/documents/upload",
+    // "http://localhost:5000/api/documents/upload",
+    "https://customer-onboarding-telecom-api.onrender.com/api/documents/upload",
     formData,
     {
       headers: {
