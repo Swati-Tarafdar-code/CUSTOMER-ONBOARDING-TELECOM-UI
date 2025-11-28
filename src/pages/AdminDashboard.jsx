@@ -67,8 +67,8 @@ const UsersList = () => {
             <tbody>
               {users.map((u) => (
                 <tr key={u.userid || u.id}>
-                  <td>{u.userid || u.id}</td>
-                  <td>{u.name || u.fullname || '-'}</td>
+                  <td>{u.userid || u.user_id}</td>
+                  <td>{u.name || u.username || '-'}</td>
                   <td>{u.email || '-'}</td>
                   <td>{u.role || '-'}</td>
                   <td>
