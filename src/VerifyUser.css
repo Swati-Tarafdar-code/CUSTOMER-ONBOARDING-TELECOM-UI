@@ -115,5 +115,63 @@
 /* responsive */
 @media (max-width: 880px) {
   .profile-meta { grid-template-columns: 1fr; }
-  .docs-table { min-width: 600px; }
+  .d
+  
+  ocs-table { min-width: 600px; }
+}
+
+/* Reviewer Comment Section */
+.verify-comment {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eef2f7;
+}
+
+.verify-comment h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  color: #111827;
+}
+
+.comment-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comment-input {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #111827;
+  resize: vertical;
+}
+
+.comment-input:focus {
+  outline: none;
+  border-color: #0b6bd6;
+  box-shadow: 0 0 0 3px rgba(11, 107, 214, 0.1);
+}
+
+.btn-comment {
+  background: #0b6bd6;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.2s;
+}
+
+.btn-comment:hover:not(:disabled) {
+  background: #0a5bc4;
+}
+
+.btn-comment:disabled {
+  opacity: 0.7;
+  cursor: default;
 }
