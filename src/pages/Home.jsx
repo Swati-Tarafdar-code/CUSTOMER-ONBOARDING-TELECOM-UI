@@ -20,7 +20,8 @@ const Home = () => {
 
           {!role ? (
             <div className="hero-actions">
-              <Link to="/customer" className="link-secondary">Access Customer Dashboard</Link>
+              {/* <Link to="/customer" className="link-secondary">Access Customer Dashboard</Link> */}
+              <Link to="/login?role=customer" className="btn-primary">Access Customer Dashboard</Link>
               <Link to="/login?role=admin" className="btn-primary">Go to Admin Dashboard</Link>
             </div>
           ) : (
@@ -45,3 +46,5 @@ const Home = () => {
 
 export default Home;
 // ...existing code...
+
+

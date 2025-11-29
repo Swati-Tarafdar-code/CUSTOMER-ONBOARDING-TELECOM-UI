@@ -1,0 +1,5 @@
+.customer-dashboard { padding: 28px 32px; background:#f7fafc; min-height:calc(100vh - 72px); box-sizing:border-box; }
+.cards { display:grid; grid-template-columns:1fr 420px; gap:28px; max-width:1200px; margin:0 auto; }
+.card { background:#fff; border-radius:12px; padding:28px; box-shadow:0 10px 24px rgba(16,24,40,0.06); }
+.card h3{ margin:0 0 6px; font-size:22px; color:#111827; }
+.muted{ color:#6b7280; font-size:14px; margin-bottom:18px; }

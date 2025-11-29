@@ -1,0 +1,27 @@
+/* Dropzone (UploadDocument.css similarity) */
+.dropzone{ border:2px dashed #e6e9ee; border-radius:10px; padding:30px; display:flex; align-items:center; justify-content:center; min-height:200px; background:linear-gradient(180deg,#f8fafc,#fff); }
+.dropzone.has-file{ border-style:solid; border-color:#dbeafe; }
+.drop-inner{text-align:center;}
+.icon{ font-size:30px; color:#64748b; margin-bottom:10px; }
+.drop-text{ color:#475569; margin-bottom:12px; }
+.btn-browse{ background:#fff; border:1px solid #cbd5e1; padding:8px 14px; border-radius:6px; color:#0b6bd6; cursor:pointer; }
+.file-info{ display:flex; gap:12px; align-items:center; justify-content:center; }
+.file-info img{ width:120px; height:80px; object-fit:cover; border-radius:6px; border:1px solid #e6eef8; }
+.file-name{ font-weight:600; color:#0f1724; }
+.file-meta{ color:#64748b; font-size:13px; }
+
+/* actions */
+.actions-row{ margin-top:18px; display:flex; align-items:center; gap:12px; }
+.btn{ padding:10px 16px; border-radius:8px; border:none; cursor:pointer; font-weight:600; }
+.btn-primary{ background:#0b6bd6; color:#fff; }
+.status-message{ margin-left:12px; color:#0f1724; font-size:14px; }
+
+/* activity */
+.activity-item{ display:flex; justify-content:space-between; padding:12px 0; align-items:center; }
+.activity-item .label{ color:#6b7280; font-size:14px; }
+.activity-item .value{ color:#111827; font-weight:600; }
+.divider{ height:1px; background:#eef2f7; margin:8px 0; }
+
+/* responsive */
+@media (max-width:1024px){ .cards{ grid-template-columns:1fr; max-width:880px; } }
+@media (max-width:520px){ .file-info img{ width:100px; height:70px; } .btn{ padding:10px 12px; } }

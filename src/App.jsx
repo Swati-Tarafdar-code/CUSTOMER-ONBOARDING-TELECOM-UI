@@ -13,6 +13,7 @@ import UsersList from './pages/admin/UsersList';
 import PendingUsers from './pages/admin/PendingUsers';
 import UserDetails from './pages/admin/UserDetails';
 import AuditLogs from './pages/admin/AuditLogs';
+import VerifyUser from './pages/admin/VerifyUser';
 import UploadDocument from './pages/customer/UploadDocument';
 import MyDocuments from './pages/customer/MyDocuments';
 import OcrRun from './pages/customer/OcrRun';
@@ -31,14 +32,14 @@ const App = () => (
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<UsersList />} />
             <Route path="/admin/pending" element={<PendingUsers />} />
-            <Route path="/admin/users/:userId" element={<UserDetails />} />
+            <Route path="/admin/users/:userId" element={<VerifyUser />} />
             <Route path="/admin/audit" element={<AuditLogs />} />
           </Route>
 
           <Route element={<RoleRoute role="customer" />}>
-            <Route path="/customer" element={<CustomerDashboard />} />
-            <Route path="/customer/upload" element={<UploadDocument />} />
-            <Route path="/customer/documents" element={<MyDocuments />} />
+            {/* <Route path="/customer" element={<CustomerDashboard />} /> */}
+            <Route path="/customer/upload" element={<CustomerDashboard />} />
+            <Route path="/customer/status" element={<MyDocuments />} />
             <Route path="/customer/ocr/:documentId" element={<OcrRun />} />
           </Route>
         </Route>
