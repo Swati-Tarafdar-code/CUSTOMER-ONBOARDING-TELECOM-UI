@@ -11,6 +11,8 @@ const Navbar = () => {
   const location = useLocation();
 
   const handleLogout = () => {
+    const ok = window.confirm('Are you sure you want to logout?');
+    if (!ok) return;
     logout();
     navigate('/');
   };
