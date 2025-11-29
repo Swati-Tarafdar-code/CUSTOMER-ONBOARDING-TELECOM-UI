@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { getUsers, updateUserStatus } from '../api/users';
+import { useNavigate } from "react-router-dom";
 import '../AdminDashboard.css'; // shared admin styles
 
 const UsersList = () => {
@@ -9,6 +10,7 @@ const UsersList = () => {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(null);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const fetch = async () => {
     setError('');
@@ -27,17 +29,25 @@ const UsersList = () => {
     fetch();
   }, []);
 
-  const handleVerify = async (userId) => {
-    setActionLoading(userId);
-    try {
-      await updateUserStatus(userId, 'approved');
-      await fetch();
-    } catch (err) {
-      console.error(err);
-      setError(err?.response?.data?.message || err.message || 'Action failed');
-    } finally {
-      setActionLoading(null);
+  // const handleVerify = async (userId) => {
+  //   setActionLoading(userId);
+  //   try {
+  //     await updateUserStatus(userId, 'approved');
+  //     await fetch();
+  //   } catch (err) {
+  //     console.error(err);
+  //     setError(err?.response?.data?.message || err.message || 'Action failed');
+  //   } finally {
+  //     setActionLoading(null);
+  //   }
+  // };
+
+    const handleVerify = (userId) => {
+    if (!userId) {
+      console.error("No userId provided");
+      return;
     }
+    navigate(`/admin/users/${userId}`);
   };
 
   return (
@@ -79,10 +89,10 @@ const UsersList = () => {
                   <td style={{ textAlign: 'right' }}>
                     <button
                       className="btn-sm"
-                      onClick={() => handleVerify(u.userid || u.id)}
-                      disabled={actionLoading === (u.userid || u.id)}
+                      onClick={() => handleVerify(u.user_id || u.id)}
+                      disabled={actionLoading === (u.user_id || u.id)}
                     >
-                      {actionLoading === (u.userid || u.id) ? 'Working…' : 'Verify'}
+                      {actionLoading === (u.user_id || u.id) ? 'Working…' : 'Verify'}
                     </button>
                   </td>
                 </tr>
