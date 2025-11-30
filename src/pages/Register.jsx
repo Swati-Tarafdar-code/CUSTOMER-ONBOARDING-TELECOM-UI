@@ -4,7 +4,7 @@ import { signup } from '../api/auth';
 import '../Register.css';
 
 const Register = () => {
-  const [fullname, setFullname] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('customer');
