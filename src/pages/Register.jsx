@@ -18,7 +18,7 @@ const Register = () => {
     setLoading(true);
     try {
       // payload keys: adjust if backend expects different names (e.g. name / fullName)
-      const payload = { fullname, email, password, role };
+      const payload = { username, email, password, role };
       await signup(payload);
       setLoading(false);
       navigate('/login');
@@ -36,8 +36,8 @@ const Register = () => {
 
         {error && <div className="error">{error}</div>}
 
-        <label>Full Name</label>
-        <input value={fullname} onChange={(e) => setFullname(e.target.value)} placeholder="John Doe" required />
+        <label>Username</label>
+        <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="john_doe" required />
 
         <label>Email Address</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="john.doe@example.com" required />
